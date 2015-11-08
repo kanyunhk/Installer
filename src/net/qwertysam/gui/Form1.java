@@ -152,7 +152,7 @@ public class Form1 extends JFrame implements ActionListener, IUpdatableFrame
 			comboBox.setSelectedIndex(comboBoxSelected);
 		}
 
-		DirUtil.setSelectedVersion(comboBox.getItemAt(comboBoxSelected));
+		VersionsUtil.setSelectedVersion(comboBox.getItemAt(comboBoxSelected));
 
 		updateEnabilityOfButtons();
 	}

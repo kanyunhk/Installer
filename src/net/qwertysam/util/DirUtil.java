@@ -1,6 +1,11 @@
 package net.qwertysam.util;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 public class DirUtil
 {
@@ -14,7 +19,7 @@ public class DirUtil
 	private static final String MAC_PATH = "~" + SEP + "Library" + SEP + "Application Support" + SEP + "minecraft";
 
 	private static String selectedPath = null;
-	private static String selectedVersion = null;
+	
 
 	public static final String MC_DIR_NOT_FOUND = "NOT FOUND";
 
@@ -50,22 +55,12 @@ public class DirUtil
 
 	public static String getSelectedVersionPath()
 	{
-		return formatPath(getVersionsPath() + SEP + selectedVersion);
+		return formatPath(getVersionsPath() + SEP + VersionsUtil.getSelectedVersion());
 	}
 
 	public static String getSelectedVersionJarPath()
 	{
-		return formatPath(getSelectedVersionPath() + SEP + getSelectedVersion() + ".jar");
-	}
-
-	public static String getSelectedVersion()
-	{
-		return selectedVersion;
-	}
-
-	public static void setSelectedVersion(String version)
-	{
-		selectedVersion = version;
+		return formatPath(getSelectedVersionPath() + SEP + VersionsUtil.getSelectedVersion() + ".jar");
 	}
 
 	public static String getVersionsPath()
@@ -108,5 +103,59 @@ public class DirUtil
 			}
 		}
 		return file.delete();
+	}
+	
+	public static void copyFolder(String inDir, String outDir)
+	{
+		File inFile = new File(inDir);
+		File outFile = new File(outDir);
+		
+		try
+		{
+			if (inFile.isDirectory())
+			{
+
+				// if directory not exists, create it
+				if (!outFile.exists())
+				{
+					outFile.mkdir();
+				}
+
+				// list all the directory contents
+				String files[] = inFile.list();
+
+				for (String file : files)
+				{
+					// construct the src and dest file structure
+					File srcFile = new File(inFile, file);
+					File destFile = new File(outFile, file);
+					// recursive copy
+					copyFolder(srcFile.getPath(), destFile.getPath());
+				}
+			}
+			else
+			{
+				// if file, then copy it
+				// Use bytes stream to support all file types
+				InputStream in = new FileInputStream(inFile);
+				OutputStream out = new FileOutputStream(outFile);
+
+				byte[] buffer = new byte[1024];
+
+				int length;
+				// copy the file content in bytes
+				while ((length = in.read(buffer)) > 0)
+				{
+					out.write(buffer, 0, length);
+				}
+
+				in.close();
+				out.close();
+			}
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 }

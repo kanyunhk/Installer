@@ -7,6 +7,11 @@ import java.util.List;
 
 public class VersionsUtil
 {
+	public static final List<String> DEFAULT_VERSIONS = new ArrayUtil<String>().toList(new String[]{
+			"1.8",
+	
+	});
+	
 	public static List<String> getValidVersions()
 	{
 		List<String> versions = new ArrayList<String>();
@@ -49,5 +54,26 @@ public class VersionsUtil
 	public static boolean hasVersions()
 	{
 		return !VersionsUtil.getValidVersions().isEmpty();
+	}
+
+	private static String selectedVersion = null;
+	
+	public static String getSelectedVersion()
+	{
+		return selectedVersion;
+	}
+
+	public static void setSelectedVersion(String version)
+	{
+		selectedVersion = version;
+	}
+	
+	public static boolean isVersionDefault(String version)
+	{
+		for (String defVersion : DEFAULT_VERSIONS)
+		{
+			if (version.equals(defVersion)) return true;
+		}
+		return false;
 	}
 }

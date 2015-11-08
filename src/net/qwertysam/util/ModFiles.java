@@ -4,7 +4,7 @@ import java.util.List;
 
 public class ModFiles
 {
-	private static final String[] MOD_FILES_ARRAY = {
+	public static final List<String> MOD_FILES = new ArrayUtil<String>().toList(new String[]{
 			"/btv.class",
 			
 			"/assets/minecraft/qwertysam/textures/buttons.png",
@@ -44,7 +44,5 @@ public class ModFiles
 			
 			"/net/playmcm/qwertysam/ModMain.class"
 	
-	};
-	
-	public static final List<String> MOD_FILES = new ArrayUtil<String>().toList(MOD_FILES_ARRAY);
+	});
 }
