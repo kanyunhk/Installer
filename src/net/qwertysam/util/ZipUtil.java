@@ -8,21 +8,23 @@ import java.io.IOException;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
+import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 import javax.swing.JLabel;
-import javax.swing.JProgressBar;
+
+import net.qwertysam.resource.PercentageCalc;
 
 public class ZipUtil
 {
-	public static void unzipFile(String inFile, String outDir, JLabel labelToUpdate, JProgressBar progressBar)
+	public static void unzipFile(String inFile, String outDir, JLabel labelToUpdate, PercentageCalc percentageCalc)
 	{
-		unzipFile(false, inFile, outDir, labelToUpdate, progressBar);
+		unzipFile(false, inFile, outDir, labelToUpdate, percentageCalc);
 	}
 
 	public static void unzipFile(boolean newThread, String inFile, String outDir, JLabel labelToUpdate,
-			JProgressBar progressBar)
+			PercentageCalc percentageCalc)
 	{
 		if (newThread)
 		{
@@ -31,7 +33,7 @@ public class ZipUtil
 				@Override
 				public void run()
 				{
-					unzipProcedure(inFile, outDir, labelToUpdate, progressBar);
+					unzipProcedure(inFile, outDir, labelToUpdate, percentageCalc);
 				}
 			};
 
@@ -40,11 +42,12 @@ public class ZipUtil
 		}
 		else
 		{
-			unzipProcedure(inFile, outDir, labelToUpdate, progressBar);
+			unzipProcedure(inFile, outDir, labelToUpdate, percentageCalc);
 		}
 	}
 
-	private static void unzipProcedure(String inFile, String outDir, JLabel labelToUpdate, JProgressBar progressBar)
+	private static void unzipProcedure(String inFile, String outDir, JLabel labelToUpdate,
+			PercentageCalc percentageCalc)
 	{
 		try
 		{
@@ -52,6 +55,11 @@ public class ZipUtil
 
 			File dir = new File(outDir);
 			if (!dir.exists()) dir.mkdir();
+
+			ZipFile zip = new ZipFile(inFile);
+			percentageCalc.setMaxPercent(zip.size());
+			System.out.println(zip.size());
+			zip.close();
 
 			ZipInputStream zis = new ZipInputStream(new FileInputStream(inFile));
 
@@ -64,6 +72,7 @@ public class ZipUtil
 					File newFile = new File(outDir + File.separator + entry.getName());
 
 					labelToUpdate.setText("Extracting: " + entry.getName());
+					percentageCalc.addPercent();
 
 					new File(newFile.getParent()).mkdirs();
 
@@ -107,13 +116,13 @@ public class ZipUtil
 	}
 
 	public static void zipFile(List<File> filesToArchive, String zipOutput, JLabel labelToUpdate,
-			JProgressBar progressBar)
+			PercentageCalc percentageCalc)
 	{
-		zipFile(false, filesToArchive, zipOutput, labelToUpdate, progressBar);
+		zipFile(false, filesToArchive, zipOutput, labelToUpdate, percentageCalc);
 	}
 
 	public static void zipFile(boolean newThread, List<File> filesToArchive, String zipOutput, JLabel labelToUpdate,
-			JProgressBar progressBar)
+			PercentageCalc percentageCalc)
 	{
 		if (newThread)
 		{
@@ -122,7 +131,7 @@ public class ZipUtil
 				@Override
 				public void run()
 				{
-					zipProcedure(filesToArchive, zipOutput, labelToUpdate, progressBar);
+					zipProcedure(filesToArchive, zipOutput, labelToUpdate, percentageCalc);
 				}
 			};
 
@@ -131,18 +140,20 @@ public class ZipUtil
 		}
 		else
 		{
-			zipProcedure(filesToArchive, zipOutput, labelToUpdate, progressBar);
+			zipProcedure(filesToArchive, zipOutput, labelToUpdate, percentageCalc);
 		}
 	}
 
 	public static void zipProcedure(List<File> filesToArchive, String zipOutput, JLabel labelToUpdate,
-			JProgressBar progressBar)
+			PercentageCalc percentageCalc)
 	{
 		File zipfile = new File(zipOutput);
 		// Create a buffer for reading the files
 		byte[] buffer = new byte[1024];
 		try
 		{
+			percentageCalc.setMaxPercent(filesToArchive.size());
+
 			// create the ZIP file
 			ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zipfile));
 			// compress the files
@@ -153,10 +164,12 @@ public class ZipUtil
 					try
 					{
 						labelToUpdate.setText("Compressing: " + file.getName());
-	
+						percentageCalc.addPercent();
+
 						FileInputStream in = new FileInputStream(file.getCanonicalFile());
 						// add ZIP entry to output stream with the offset of the path to maintain the folder structure of the minecraft.jar
-						out.putNextEntry(new ZipEntry(file.getPath().replace(DirUtil.getTempDirPath(), "").substring(1)));
+						out.putNextEntry(
+								new ZipEntry(file.getPath().replace(DirUtil.getTempDirPath(), "").substring(1)));
 						// transfer bytes from the file to the ZIP file
 						int len;
 						while ((len = in.read(buffer)) > 0)
@@ -171,10 +184,6 @@ public class ZipUtil
 					{
 						e.printStackTrace();
 					}
-				}
-				else
-				{
-					
 				}
 			}
 			// complete the ZIP file
