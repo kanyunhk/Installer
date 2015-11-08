@@ -3,9 +3,12 @@ package net.qwertysam.gui;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JProgressBar;
@@ -43,6 +46,8 @@ public class Form1 extends JFrame implements ActionListener, IUpdatableFrame
 
 	private boolean isWorking = false;
 
+	private JFileChooser fc;
+
 	public Form1()
 	{
 		// Instantiates the frame
@@ -70,7 +75,7 @@ public class Form1 extends JFrame implements ActionListener, IUpdatableFrame
 		// Options in the combobox
 		comboBox = new JComboBox<String>();
 		comboBox.addActionListener(this);
-		comboBox.setBounds(10, 59, 90, 28);
+		comboBox.setBounds(10, 59, 132, 28);
 		cont.add(comboBox);
 
 		// The Combo box label
@@ -80,13 +85,13 @@ public class Form1 extends JFrame implements ActionListener, IUpdatableFrame
 
 		// The start button
 		start = new JButton("Start");
-		start.setBounds(240, 56, 94, 32);
+		start.setBounds(260, 56, 74, 32);
 		start.addActionListener(this);
 		cont.add(start);
 
 		// The change minecraft dir button
 		changeDir = new JButton("Change Dir");
-		changeDir.setBounds(110, 56, 120, 32);
+		changeDir.setBounds(152, 56, 98, 32);
 		changeDir.addActionListener(this);
 		cont.add(changeDir);
 
@@ -100,6 +105,10 @@ public class Form1 extends JFrame implements ActionListener, IUpdatableFrame
 		progressLabel.setBounds(progress.getX(), progress.getY() - 18, 300, 20);
 		cont.add(progressLabel);
 
+		// Create a file chooser
+		fc = new JFileChooser();
+		fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
 		update();
 
 		frame.add(cont);
@@ -112,18 +121,22 @@ public class Form1 extends JFrame implements ActionListener, IUpdatableFrame
 		mcDir.setText(DirUtil.getSelectedPath());
 
 		comboBox.removeAllItems();
-		for (String entry : VersionsUtil.getValidVersions())
+		List<String> versionEntries = VersionsUtil.getValidVersions();
+		if (!versionEntries.isEmpty() && versionEntries != null)
 		{
-			comboBox.addItem(entry);
-		}
+			for (String entry : VersionsUtil.getValidVersions())
+			{
+				comboBox.addItem(entry);
+			}
 
-		// If there is an error, revert to the previously working index
-		if (comboBoxSelected < 0)
-		{
-			comboBoxSelected = previousBoxSelected;
+			// If there is an error, revert to the previously working index
+			if (comboBoxSelected < 0)
+			{
+				comboBoxSelected = previousBoxSelected;
+			}
+			
+			comboBox.setSelectedIndex(comboBoxSelected);
 		}
-
-		comboBox.setSelectedIndex(comboBoxSelected);
 
 		DirUtil.setSelectedVersion(comboBox.getItemAt(comboBoxSelected));
 
@@ -148,24 +161,23 @@ public class Form1 extends JFrame implements ActionListener, IUpdatableFrame
 		}
 		else
 		{
-			comboBox.setEnabled(true);
-			start.setEnabled(true);
+			boolean hasVersions = VersionsUtil.hasVersions();
+			comboBox.setEnabled(hasVersions);
+			start.setEnabled(hasVersions && comboBoxSelected >=0);
 			changeDir.setEnabled(true);
 		}
 	}
-	
+
 	@Override
 	public boolean isWorking()
 	{
 		return isWorking;
 	}
 
-	private int wait = 0;
-
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		if (wait > 1 && !isWorking() && e.getID() == ActionEvent.ACTION_PERFORMED)
+		if (!isWorking())
 		{
 			if (e.getSource().equals(start) && start.isEnabled())
 			{
@@ -178,12 +190,21 @@ public class Form1 extends JFrame implements ActionListener, IUpdatableFrame
 			}
 			else if (e.getSource().equals(changeDir) && changeDir.isEnabled())
 			{
+				if (!DirUtil.getSelectedPath().equals(DirUtil.MC_DIR_NOT_FOUND))
+				{
+					fc.setSelectedFile(new File(DirUtil.getSelectedPath()));
+				}
+				int returnVal = fc.showOpenDialog(cont);
 
+				if (returnVal == JFileChooser.APPROVE_OPTION)
+				{
+					File file = fc.getSelectedFile();
+					System.out.println(file.getAbsolutePath());
+					DirUtil.setSelectedPath(file.getAbsolutePath());
+					comboBoxSelected = 0;
+					update();
+				}
 			}
-		}
-		else
-		{
-			wait++;
 		}
 	}
 }

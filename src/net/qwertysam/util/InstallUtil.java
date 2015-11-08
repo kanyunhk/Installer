@@ -38,13 +38,26 @@ public class InstallUtil
 		// Keeps a backup of the original jar
 		FileUtil.renameFile(DirUtil.getSelectedVersionJarPath(), DirUtil.getSelectedVersionJarPath() + ".backup");
 		
+		// Deletes the META-INF directory
+		if (!DirUtil.deleteDir(new File(DirUtil.getTempDirPath() + DirUtil.SEP + "META-INF"))) System.out.println("[CRITICAL] Failed to delete the META-INF directory.");
+		
+		// Brings the mod files from inside the jar to the temp folder
+		FileUtil.getFileFromInsideJar("/mod/mod_files.zip", DirUtil.getTempDirPath());
+		
+		// Unzips the mod files to the temp directory
+		ZipUtil.unzipFile(DirUtil.getTempDirPath() + DirUtil.SEP + "mod_files.zip", DirUtil.getTempDirPath(), labelToUpdate, progressBar);
+		
+		// Deletes the mod zip before recompressing the jar
+		new File(DirUtil.getTempDirPath() + DirUtil.SEP + "mod_files.zip").delete();
+		
 		// Zips selected jar 
 		ZipUtil.zipFile(FileUtil.getFiles(DirUtil.getTempDirPath()), DirUtil.getSelectedVersionJarPath(), labelToUpdate,
 				progressBar);
 		
-		// Deleted the temp directory
+		// Deletes the temp directory
 		if (!DirUtil.deleteDir(tempDir)) System.out.println("[CRITICAL] Failed to delete the temporary directory.");
 		
+		labelToUpdate.setText("Finished Installing!");
 		frame.setWorking(false);
 	}
 }

@@ -16,7 +16,9 @@ public class DirUtil
 	private static String selectedPath = null;
 	private static String selectedVersion = null;
 
-	public static String getDefaultMinecraftPath()
+	public static final String MC_DIR_NOT_FOUND = "NOT FOUND";
+	
+	private static String getDefaultMinecraftPath()
 	{
 		switch (OsUtil.getOSType())
 		{
@@ -33,7 +35,7 @@ public class DirUtil
 			default:
 				break;
 		}
-		return null;
+		return MC_DIR_NOT_FOUND;
 	}
 
 	public static String getSelectedPath()

@@ -45,4 +45,9 @@ public class VersionsUtil
 
 		return versions;
 	}
+	
+	public static boolean hasVersions()
+	{
+		return !VersionsUtil.getValidVersions().isEmpty();
+	}
 }
