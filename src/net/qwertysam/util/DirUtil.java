@@ -11,13 +11,13 @@ public class DirUtil
 	private static final String WINDOWS_XP_PATH = "C:" + SEP + "Documents and Settings" + SEP + USERNAME + SEP
 			+ "Application Data" + SEP + ".minecraft";
 	private static final String LINUX_PATH = "~" + SEP + ".minecraft";
-	private static final String MAC_PATH = "~" + SEP + "Library" + SEP + "Application Support" + SEP + "minecraft"; // TODO find out what it is
+	private static final String MAC_PATH = "~" + SEP + "Library" + SEP + "Application Support" + SEP + "minecraft";
 
 	private static String selectedPath = null;
 	private static String selectedVersion = null;
 
 	public static final String MC_DIR_NOT_FOUND = "NOT FOUND";
-	
+
 	private static String getDefaultMinecraftPath()
 	{
 		switch (OsUtil.getOSType())

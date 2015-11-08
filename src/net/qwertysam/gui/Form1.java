@@ -47,7 +47,7 @@ public class Form1 extends JFrame implements ActionListener, IUpdatableFrame
 
 	private JLabel title;
 	private JLabel credit;
-	
+
 	private boolean isWorking = false;
 
 	private JFileChooser fc;
@@ -60,7 +60,7 @@ public class Form1 extends JFrame implements ActionListener, IUpdatableFrame
 		frame.setSize(PANEL_SIZE_X, PANEL_SIZE_Y);
 		frame.setResizable(false);
 		frame.setLocationRelativeTo(null); // Starts window in centre of screen
-		
+
 		// Instantiates the container
 		cont = new Container();
 		cont.setLayout(null);
@@ -113,12 +113,12 @@ public class Form1 extends JFrame implements ActionListener, IUpdatableFrame
 		title.setBounds(136, 5, 300, 20);
 		title.setFont(Font.decode("Arial-Bold-22"));
 		cont.add(title);
-		
+
 		credit = new JLabel("By Samson Close");
 		credit.setBounds(170, 24, 300, 20);
 		credit.setFont(Font.decode("Arial-Bold-14"));
 		cont.add(credit);
-		
+
 		// Create a file chooser
 		fc = new JFileChooser();
 		fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -148,7 +148,7 @@ public class Form1 extends JFrame implements ActionListener, IUpdatableFrame
 			{
 				comboBoxSelected = previousBoxSelected;
 			}
-			
+
 			comboBox.setSelectedIndex(comboBoxSelected);
 		}
 
@@ -177,7 +177,7 @@ public class Form1 extends JFrame implements ActionListener, IUpdatableFrame
 		{
 			boolean hasVersions = VersionsUtil.hasVersions();
 			comboBox.setEnabled(hasVersions);
-			start.setEnabled(hasVersions && comboBoxSelected >=0);
+			start.setEnabled(hasVersions && comboBoxSelected >= 0);
 			changeDir.setEnabled(true);
 		}
 	}

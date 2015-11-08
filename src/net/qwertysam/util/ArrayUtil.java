@@ -8,12 +8,12 @@ public class ArrayUtil<T>
 	public List<T> toList(T[] t)
 	{
 		List<T> list = new ArrayList<T>();
-		
+
 		for (T t2 : t)
 		{
 			list.add(t2);
 		}
-		
+
 		return list;
 	}
 }

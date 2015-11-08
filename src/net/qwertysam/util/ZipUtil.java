@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
@@ -195,14 +196,79 @@ public class ZipUtil
 		}
 	}
 
-	public static String getRelativePath(String sourceDir, File file)
+	public static void addFilesToExistingZip(String zipFilePath, List<File> files)
 	{
-		// Trim off the start of source dir path...
-		String path = file.getPath().substring(sourceDir.length());
-		if (path.startsWith(File.pathSeparator))
+		try
 		{
-			path = path.substring(1);
+			File zipFile = new File(zipFilePath);
+
+			// get a temp file
+			File tempFile = File.createTempFile(zipFile.getName(), null);
+			// delete it, otherwise you cannot rename your existing zip to it.
+			tempFile.delete();
+
+			boolean renameOk = zipFile.renameTo(tempFile);
+			if (!renameOk)
+			{
+				throw new RuntimeException(
+						"could not rename the file " + zipFile.getAbsolutePath() + " to " + tempFile.getAbsolutePath());
+			}
+			byte[] buf = new byte[1024];
+
+			ZipInputStream zin = new ZipInputStream(new FileInputStream(tempFile));
+			ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zipFile));
+
+			ZipEntry entry = zin.getNextEntry();
+			while (entry != null)
+			{
+				String name = entry.getName();
+				boolean notInFiles = true;
+				for (File f : files)
+				{
+					if (f.getName().equals(name))
+					{
+						notInFiles = false;
+						break;
+					}
+				}
+				if (notInFiles)
+				{
+					// Add ZIP entry to output stream.
+					out.putNextEntry(new ZipEntry(name));
+					// Transfer bytes from the ZIP file to the output file
+					int len;
+					while ((len = zin.read(buf)) > 0)
+					{
+						out.write(buf, 0, len);
+					}
+				}
+				entry = zin.getNextEntry();
+			}
+			// Close the streams
+			zin.close();
+			// Compress the files
+			for (File file : files)
+			{
+				InputStream in = new FileInputStream(file);
+				// Add ZIP entry to output stream.
+				out.putNextEntry(new ZipEntry(file.getPath().replace(DirUtil.getTempDirPath(), "").substring(1)));
+				// Transfer bytes from the file to the ZIP file
+				int len;
+				while ((len = in.read(buf)) > 0)
+				{
+					out.write(buf, 0, len);
+				}
+				// Complete the entry
+				out.closeEntry();
+				in.close();
+			}
+			// Complete the ZIP file
+			out.close();
+			tempFile.delete();
 		}
-		return path;
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 }

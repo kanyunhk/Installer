@@ -9,9 +9,10 @@ public class PercentageCalc
 	private final int total;
 
 	private final int barPriorValue;
-	
+
 	// The value of the bar prior to being modified by this
 	private JProgressBar progressBar;
+
 	/**
 	 * @param totalPercentAllocated the weight of this percentage
 	 */
@@ -41,7 +42,7 @@ public class PercentageCalc
 	}
 
 	int previousPercent = 0;
-	
+
 	public void updateProgressBar()
 	{
 		if (totalPercentage() > previousPercent)
@@ -50,7 +51,7 @@ public class PercentageCalc
 			progressBar.setValue(barPriorValue + totalPercentage());
 		}
 	}
-	
+
 	public int totalPercentage()
 	{
 		if (max == 0) return 0;
