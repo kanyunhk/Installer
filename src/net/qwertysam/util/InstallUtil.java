@@ -28,7 +28,7 @@ public class InstallUtil
 	{
 		progressBar.setValue(0);
 
-		FileUtil.moveFromThisJarToThatJar(ModFiles.MOD_FILES, DirUtil.getSelectedVersionJarPath());
+		JarUtil.moveFromThisJarToThatJar(ModFiles.MOD_FILES, DirUtil.getSelectedVersionJarPath());
 
 		progressBar.setValue(100);
 

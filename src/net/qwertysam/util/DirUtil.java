@@ -53,11 +53,6 @@ public class DirUtil
 		return formatPath(getVersionsPath() + SEP + selectedVersion);
 	}
 
-	public static String getTempDirPath()
-	{
-		return formatPath(getSelectedPath() + SEP + "work_temp");
-	}
-
 	public static String getSelectedVersionJarPath()
 	{
 		return formatPath(getSelectedVersionPath() + SEP + getSelectedVersion() + ".jar");
