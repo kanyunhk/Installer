@@ -36,7 +36,6 @@ public class JsonUtil
 			{
 				bw.write(line);
 				bw.newLine();
-				System.out.println(line);
 			}
 			bw.close();
 		}

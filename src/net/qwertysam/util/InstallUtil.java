@@ -2,14 +2,11 @@ package net.qwertysam.util;
 
 import java.io.File;
 
-import javax.swing.JLabel;
-import javax.swing.JProgressBar;
-
 import net.qwertysam.resource.IUpdatableFrame;
 
 public class InstallUtil
 {
-	public static void installMod(IUpdatableFrame frame, JLabel labelToUpdate, JProgressBar progressBar)
+	public static void installMod(IUpdatableFrame frame)
 	{
 		frame.setWorking(true);
 
@@ -18,7 +15,7 @@ public class InstallUtil
 			@Override
 			public void run()
 			{
-				installProcedure(frame, labelToUpdate, progressBar);
+				installProcedure(frame);
 			}
 		};
 
@@ -26,10 +23,8 @@ public class InstallUtil
 		t.start();
 	}
 
-	private static void installProcedure(IUpdatableFrame frame, JLabel labelToUpdate, JProgressBar progressBar)
+	private static void installProcedure(IUpdatableFrame frame)
 	{
-		progressBar.setValue(0);
-
 		// If the version is default, make a copy before moving the mod files.
 		if (VersionsUtil.isVersionDefault(VersionsUtil.getSelectedVersion()))
 		{
@@ -65,14 +60,10 @@ public class InstallUtil
 			}
 			
 			JsonUtil.formatJson(json);
-			
 		}
 		
 		JarUtil.moveFromThisJarToThatJar(ModFiles.MOD_FILES, DirUtil.getSelectedVersionJarPath());
-
-		progressBar.setValue(100);
 		
-		labelToUpdate.setText("Finished Installing!");
 		frame.setWorking(false);
 	}
 }

@@ -14,6 +14,9 @@ import net.qwertysam.resource.TransferringFile;
 
 public class JarUtil
 {
+	private static final List<String> FILES_TO_DELETE = new ArrayUtil<String>()
+			.toList(new String[] { "META-INF", "META-INF/MOJANGCS.SF", "META-INF/MOJANGCS.RSA", "MANIFEST.MF" });
+
 	public static void moveFromThisJarToThatJar(String pathInJar, String jarOutputPath)
 	{
 		List<String> list = new ArrayList<String>();
@@ -58,11 +61,28 @@ public class JarUtil
 
 				for (TransferringFile file : inputFiles)
 				{
-					if (file.fileName.equals(name))
+					if (name.equals(file.fileName))
 					{
+						System.out.println("[IGNORE] Duplicate File: " + name);
 						duplicateFile = true;
 					}
 				}
+				
+				if (name.contains("MOJANG"))
+				{
+					System.out.println("META-INF FILE: " + name);
+				}
+
+				for (String fileToDelete : FILES_TO_DELETE)
+				{
+					if (name.equals(fileToDelete))
+					{
+						System.out.println(name + " == " + fileToDelete);
+						duplicateFile = true;
+					}
+
+				}
+
 				if (!duplicateFile)
 				{
 					// Add ZIP entry to output stream.
