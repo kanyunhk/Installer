@@ -40,8 +40,6 @@ public class ModFiles
 			"/net/playmcm/qwertysam/messages/RulesPage.class",
 			"/net/playmcm/qwertysam/messages/VotePage.class",
 			
-			"/net/playmcm/qwertysam/resource/KeyPress.class",
-			
 			"/net/playmcm/qwertysam/util/AuthUtil.class",
 			"/net/playmcm/qwertysam/util/KeyPress.class",
 			"/net/playmcm/qwertysam/util/PathUtil.class",
