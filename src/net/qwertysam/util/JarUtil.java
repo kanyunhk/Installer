@@ -15,7 +15,7 @@ import net.qwertysam.resource.TransferringFile;
 public class JarUtil
 {
 	private static final List<String> FILES_TO_DELETE = new ArrayUtil<String>()
-			.toList(new String[] { "META-INF", "META-INF/MOJANGCS.SF", "META-INF/MOJANGCS.RSA", "MANIFEST.MF" });
+			.toList(new String[] {"META-INF", "META-INF/MOJANGCS.SF", "META-INF/MOJANGCS.RSA", "MANIFEST.MF" });
 
 	public static void moveFromThisJarToThatJar(String pathInJar, String jarOutputPath)
 	{
@@ -68,16 +68,20 @@ public class JarUtil
 					}
 				}
 				
-				if (name.contains("MOJANG"))
+				for (String file : ModFiles.MOD_FILES)
 				{
-					System.out.println("META-INF FILE: " + name);
+					if (name.equals(file.substring(1)))
+					{
+						System.out.println("[IGNORE] Duplicate Mod File: " + name);
+						duplicateFile = true;
+					}
 				}
 
 				for (String fileToDelete : FILES_TO_DELETE)
 				{
 					if (name.equals(fileToDelete))
 					{
-						System.out.println(name + " == " + fileToDelete);
+						System.out.println("[IGNORE] Deleting File: " + name);
 						duplicateFile = true;
 					}
 
