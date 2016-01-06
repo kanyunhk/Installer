@@ -6,7 +6,7 @@ import net.qwertysam.resource.IUpdatableFrame;
 
 public class InstallUtil
 {
-	public static void installMod(IUpdatableFrame frame)
+	public static void installMod(final IUpdatableFrame frame)
 	{
 		frame.setWorking(true);
 

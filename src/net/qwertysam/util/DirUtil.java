@@ -16,7 +16,7 @@ public class DirUtil
 	private static final String WINDOWS_XP_PATH = "C:" + SEP + "Documents and Settings" + SEP + USERNAME + SEP
 			+ "Application Data" + SEP + ".minecraft";
 	private static final String LINUX_PATH = "~" + SEP + ".minecraft";
-	private static final String MAC_PATH = "~" + SEP + "Library" + SEP + "Application Support" + SEP + "minecraft";
+	private static final String MAC_PATH = SEP + "Users" + SEP + USERNAME + SEP + "Library" + SEP + "Application Support" + SEP + "minecraft";
 
 	private static String selectedPath = null;
 	
@@ -139,9 +139,10 @@ public class DirUtil
 				// Use bytes stream to support all file types
 				InputStream in = new FileInputStream(inFile);
 				OutputStream out = new FileOutputStream(outFile);
-
+				
 				byte[] buffer = new byte[1024];
 
+				
 				int length;
 				// copy the file content in bytes
 				while ((length = in.read(buffer)) > 0)
