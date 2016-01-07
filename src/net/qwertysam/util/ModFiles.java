@@ -28,6 +28,7 @@ public class ModFiles
 			"/net/playmcm/qwertysam/util/AuthUtil.class",
 			"/net/playmcm/qwertysam/util/KeyPress.class",
 			"/net/playmcm/qwertysam/util/PathUtil.class",
+			"/net/playmcm/qwertysam/util/Staff.class",
 			"/net/playmcm/qwertysam/util/UrlOpener.class",
 			
 			"/net/playmcm/qwertysam/ModMain.class"
