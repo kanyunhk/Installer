@@ -2,6 +2,7 @@ package net.qwertysam.util;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,13 +16,46 @@ import net.qwertysam.resource.TransferringFile;
 public class JarUtil
 {
 	private static final List<String> FILES_TO_DELETE = new ArrayUtil<String>()
-			.toList(new String[] {"META-INF", "META-INF/MOJANGCS.SF", "META-INF/MOJANGCS.RSA", "MANIFEST.MF" });
+			.toList(new String[] { "META-INF", "META-INF/MOJANGCS.SF", "META-INF/MOJANGCS.RSA", "MANIFEST.MF" });
 
 	public static void moveFromThisJarToThatJar(String pathInJar, String jarOutputPath)
 	{
 		List<String> list = new ArrayList<String>();
 		list.add(pathInJar);
 		moveFromThisJarToThatJar(list, jarOutputPath);
+	}
+
+	public static void moveFromThisJarToPath(String pathInJar, String outputPath)
+	{
+		TransferringFile in = new TransferringFile(Class.class.getResourceAsStream(pathInJar), pathInJar.substring(1),
+				pathInJar.split("/")[pathInJar.split("/").length - 1]);
+
+		try
+		{
+			FileOutputStream fos = new FileOutputStream(outputPath + DirUtil.SEP + in.fileName);
+
+			byte[] buf = new byte[2048];
+			int read = in.stream.read(buf);
+			while (read != -1)
+			{
+				fos.write(buf, 0, read);
+				read = in.stream.read(buf);
+			}
+			if (fos != null)
+			{
+				fos.close();
+			}
+		}
+		catch (FileNotFoundException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public static void moveFromThisJarToThatJar(List<String> pathsInJar, String jarOutputPath)
@@ -67,7 +101,7 @@ public class JarUtil
 						duplicateFile = true;
 					}
 				}
-				
+
 				for (String file : ModFiles.MOD_FILES)
 				{
 					if (name.equals(file.substring(1)))

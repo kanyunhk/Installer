@@ -23,7 +23,6 @@ public class Form1 extends JFrame implements ActionListener, IUpdatableFrame
 {
 	private static final long serialVersionUID = 1232567466340122367L;
 
-	public static final int MAX_ENTRIES = 20;
 	public static final int PANEL_SIZE_X = 350;
 	public static final int PANEL_SIZE_Y = 154;
 
@@ -55,7 +54,7 @@ public class Form1 extends JFrame implements ActionListener, IUpdatableFrame
 		frame.setSize(PANEL_SIZE_X, PANEL_SIZE_Y);
 		frame.setResizable(false);
 		frame.setLocationRelativeTo(null); // Starts window in centre of screen
-		
+
 		// Instantiates the container
 		cont = new Container();
 		cont.setLayout(null);
@@ -78,7 +77,7 @@ public class Form1 extends JFrame implements ActionListener, IUpdatableFrame
 		cont.add(comboBox);
 
 		// The Combo box label
-		comboBoxLabel = new JLabel("Version (Must be in 1.8.0)");
+		comboBoxLabel = new JLabel("Version (Must be in 1.9.0)");
 		comboBoxLabel.setBounds(comboBox.getX(), comboBox.getY() - 19, 300, 20);
 		cont.add(comboBoxLabel);
 
@@ -93,7 +92,7 @@ public class Form1 extends JFrame implements ActionListener, IUpdatableFrame
 		changeDir.setBounds(149, 84, 98, 26);
 		changeDir.addActionListener(this);
 		cont.add(changeDir);
-		
+
 		title = new JLabel("MCM Staff Mod 2.1");
 		title.setBounds(131, 10, 300, 20);
 		title.setFont(Font.decode(mcDirLabel.getFont().getFamily() + "-22"));
