@@ -12,7 +12,7 @@ public class JsonUtil
 {
 	public static final String INHERITANCE = "MCM-1.9-JSON";
 	
-	public static void formatJsonID(File json)
+	public static void formatJsonID(File json, String newID)
 	{
 		try
 		{
@@ -26,7 +26,7 @@ public class JsonUtil
 			{
 				if (!done && line.contains("  \"id\": \""))
 				{
-					newLines.add("  \"id\": \"" + VersionsUtil.getSelectedVersion() + "\",");
+					newLines.add("  \"id\": \"" + newID + "\",");
 					done = true;
 				}
 				else
@@ -62,7 +62,7 @@ public class JsonUtil
 			{
 				if (line.contains("  \"inheritsFrom\": \""))
 				{
-					newLines.add("  \"inheritsFrom\": \"" + INHERITANCE + "\",");
+					newLines.add("  \"inheritsFrom\": \"" + INHERITANCE + "\"" + (line.contains(",") ? "," : ""));
 				}
 				else
 				{
@@ -87,9 +87,14 @@ public class JsonUtil
 
 	public static void formatJsonDownloads(File json)
 	{
+		formatJsonDownloads(json, json);
+	}
+	
+	public static void formatJsonDownloads(File inJson, File outJson)
+	{
 		try
 		{
-			List<String> lines = Files.readAllLines(json.toPath());
+			List<String> lines = Files.readAllLines(inJson.toPath());
 
 			List<String> newLines = new ArrayList<String>();
 
@@ -150,7 +155,7 @@ public class JsonUtil
 				}
 			}
 
-			FileWriter fw = new FileWriter(json);
+			FileWriter fw = new FileWriter(outJson);
 			BufferedWriter bw = new BufferedWriter(fw);
 
 			for (String line : newLines)

@@ -62,7 +62,7 @@ public class InstallUtil
 		}
 		else
 		{
-			JsonUtil.formatJsonID(json);
+			JsonUtil.formatJsonID(json, VersionsUtil.getSelectedVersion());
 			JsonUtil.formatJsonInheritance(json);
 			JsonUtil.formatJsonDownloads(json);
 		}
@@ -71,7 +71,19 @@ public class InstallUtil
 		String newDir = DirUtil.getVersionsPath() + DirUtil.SEP + JsonUtil.INHERITANCE;
 		File dir = new File(newDir);
 		dir.mkdir();
-		JarUtil.moveFromThisJarToPath("/MCM-1.9-JSON.json", newDir);
+
+		File vanillaJson = new File(DirUtil.getVersionsPath() + DirUtil.SEP + "1.9" + DirUtil.SEP + "1.9.json");
+		if (vanillaJson.exists()) // Use the original 1.9 file if it can
+		{
+			File moddedJson = new File(newDir + DirUtil.SEP + "MCM-1.9-JSON.json");
+			
+			JsonUtil.formatJsonDownloads(vanillaJson, moddedJson);
+			JsonUtil.formatJsonID(moddedJson, JsonUtil.INHERITANCE);
+		}
+		else // Else use the one packages in this jar. MAY CAUSE ERRORS IF MINECRAFT UPDATE RENDERS THIS INCOMPATABLE
+		{
+			JarUtil.moveFromThisJarToPath("/MCM-1.9-JSON.json", newDir);
+		}
 
 		JarUtil.moveFromThisJarToThatJar(ModFiles.MOD_FILES, DirUtil.getSelectedVersionJarPath());
 
