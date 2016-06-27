@@ -8,7 +8,7 @@ import java.util.List;
 public class VersionsUtil
 {
 	public static final List<String> DEFAULT_VERSIONS = new ArrayUtil<String>().toList(new String[]{
-			"1.9",
+			"1.10",
 	
 	});
 	

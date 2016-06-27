@@ -10,7 +10,7 @@ import java.util.List;
 
 public class JsonUtil
 {
-	public static final String INHERITANCE = "MCM-1.9-JSON";
+	public static final String INHERITANCE = "MCM-1.10-JSON";
 	
 	public static void formatJsonID(File json, String newID)
 	{

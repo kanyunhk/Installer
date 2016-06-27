@@ -54,7 +54,7 @@ public class Form1 extends JFrame implements ActionListener, IUpdatableFrame
 		frame.setSize(PANEL_SIZE_X, PANEL_SIZE_Y);
 		frame.setResizable(false);
 		frame.setLocationRelativeTo(null); // Starts window in centre of screen
-
+		
 		// Instantiates the container
 		cont = new Container();
 		cont.setLayout(null);
@@ -77,7 +77,7 @@ public class Form1 extends JFrame implements ActionListener, IUpdatableFrame
 		cont.add(comboBox);
 
 		// The Combo box label
-		comboBoxLabel = new JLabel("Version (Must be in 1.9.0)");
+		comboBoxLabel = new JLabel("Version (Must be in 1.10.0)");
 		comboBoxLabel.setBounds(comboBox.getX(), comboBox.getY() - 19, 300, 20);
 		cont.add(comboBoxLabel);
 
@@ -93,7 +93,7 @@ public class Form1 extends JFrame implements ActionListener, IUpdatableFrame
 		changeDir.addActionListener(this);
 		cont.add(changeDir);
 
-		title = new JLabel("MCM Staff Mod 2.1");
+		title = new JLabel("MCM Staff Mod 2.2");
 		title.setBounds(131, 10, 300, 20);
 		title.setFont(Font.decode(mcDirLabel.getFont().getFamily() + "-22"));
 		cont.add(title);
