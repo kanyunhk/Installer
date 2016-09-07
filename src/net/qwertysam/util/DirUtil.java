@@ -15,7 +15,7 @@ public class DirUtil
 			+ "Roaming" + SEP + ".minecraft";
 	private static final String WINDOWS_XP_PATH = "C:" + SEP + "Documents and Settings" + SEP + USERNAME + SEP
 			+ "Application Data" + SEP + ".minecraft";
-	private static final String LINUX_PATH = "~" + SEP + ".minecraft";
+	private static final String LINUX_PATH = SEP + "home" + SEP + USERNAME + SEP + ".minecraft";
 	private static final String MAC_PATH = SEP + "Users" + SEP + USERNAME + SEP + "Library" + SEP + "Application Support" + SEP + "minecraft";
 
 	private static String selectedPath = null;
