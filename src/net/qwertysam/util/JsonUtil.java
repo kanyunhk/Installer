@@ -10,7 +10,7 @@ import java.util.List;
 
 public class JsonUtil
 {
-	public static final String INHERITANCE = "MCM-1.10-JSON";
+	public static final String INHERITANCE = "MCM-1.12.2-JSON";
 	
 	public static void formatJsonID(File json, String newID)
 	{
@@ -24,9 +24,9 @@ public class JsonUtil
 
 			for (String line : lines)
 			{
-				if (!done && line.contains("  \"id\": \""))
+				if (!done && line.startsWith("    \"id\": \"1.12.2\""))
 				{
-					newLines.add("  \"id\": \"" + newID + "\",");
+					newLines.add("    \"id\": \"" + newID + "\",");
 					done = true;
 				}
 				else
@@ -60,9 +60,9 @@ public class JsonUtil
 
 			for (String line : lines)
 			{
-				if (line.contains("  \"inheritsFrom\": \""))
+				if (line.startsWith("    \"inheritsFrom\": \""))
 				{
-					newLines.add("  \"inheritsFrom\": \"" + INHERITANCE + "\"" + (line.contains(",") ? "," : ""));
+					newLines.add("    \"inheritsFrom\": \"" + INHERITANCE + "\"" + (line.contains(",") ? "," : ""));
 				}
 				else
 				{
@@ -103,7 +103,7 @@ public class JsonUtil
 			// Does initial count
 			for (String line : lines)
 			{
-				if (line.contains("\"downloads\": "))
+				if (line.startsWith("    \"downloads\": "))
 				{
 					downloadTagCount++;
 				}
@@ -117,7 +117,7 @@ public class JsonUtil
 			{
 				if (!doRemoveSequence) // Find where to do the remove sequence
 				{
-					if (line.contains("\"downloads\": "))
+					if (line.startsWith("    \"downloads\": "))
 					{
 						currentTagCount++;
 

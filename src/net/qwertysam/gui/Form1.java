@@ -77,7 +77,7 @@ public class Form1 extends JFrame implements ActionListener, IUpdatableFrame
 		cont.add(comboBox);
 
 		// The Combo box label
-		comboBoxLabel = new JLabel("Version (Must be in 1.10.0)");
+		comboBoxLabel = new JLabel("Version (Must be in 1.12.2)");
 		comboBoxLabel.setBounds(comboBox.getX(), comboBox.getY() - 19, 300, 20);
 		cont.add(comboBoxLabel);
 
@@ -93,7 +93,7 @@ public class Form1 extends JFrame implements ActionListener, IUpdatableFrame
 		changeDir.addActionListener(this);
 		cont.add(changeDir);
 
-		title = new JLabel("MCM Staff Mod 2.2");
+		title = new JLabel("MCM Staff Mod 2.3");
 		title.setBounds(131, 10, 300, 20);
 		title.setFont(Font.decode(mcDirLabel.getFont().getFamily() + "-22"));
 		cont.add(title);

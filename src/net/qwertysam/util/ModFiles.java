@@ -5,7 +5,7 @@ import java.util.List;
 public class ModFiles
 {
 	public static final List<String> MOD_FILES = new ArrayUtil<String>().toList(new String[]{
-			"/bdd.class",
+			"/bih.class",
 			
 			"/assets/minecraft/qwertysam/textures/buttons.png",
 			
